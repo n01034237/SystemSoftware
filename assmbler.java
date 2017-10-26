@@ -1,12 +1,18 @@
+//import libraries
 import java.util.*;
 import java.lang.*;
 import java. io.*;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
 
 public class assmbler{
 
+   //main method
    public static void main(String args[]) throws FileNotFoundException{
    
-     // ArrayList<Program> progArray = new ArrayList<Program>();
+     //array that stores each line read from file
+     ArrayList<String> array = new ArrayList<String>();
       
       if (args.length <= 0){
       
@@ -23,48 +29,48 @@ public class assmbler{
          //program reads file
          while(reader.hasNextLine()){
          
+            //if file has next line then continue to read and store into array
             String line = reader.nextLine();
-            System.out.println(line);
-            //line.add(reader.nextLine());
-            
-            /*
-            if(line.equals("START")){
-            
-               String opcode/numonuic = reader.nextLine();
-               progArray.add(new Program(opcode))  
-            }
-            */
+         
+            array.add(new String(line));
+             
          }
          reader.close();
+         
+         BufferedWriter bw = null;
+         FileWriter fw = null;
+         //write a new line to the output file
+         String newLine = System.getProperty("line.separator");
+        
+        //try to write to  output file 
+         try{      
+   
+           //user can change output file name
+           fw = new FileWriter("prog1testing.txt");
+           bw = new BufferedWriter(fw);
+           
+           //compare string to lines of string stored in the ArrayList array
+           for(String str : array){
+          
+          //writes contents of array into output file 
+           bw.write(str + newLine);
+           
+            
+            }
+            bw.close();
+        
+         
+            }
+            catch (IOException e){
+               System.out.println("Cannot write file.");
+           
+            }
+                      
       }
       catch(FileNotFoundException error){
          System.out.println("Error. Cannot read file.");
          return;
       }
-      
-      //System.out.println(progArray);
-      
+                 
    }
 }
-
-/*Program class
-class Program implements Comparable<Program>{
-
-public Program(){
-}
-}*/
-
-/*public Class WriteFile{
-
-   private String path;
-   private boolean append_to_file = false;
-   
-   public WriteFile(String file_path){
-         
-      path = file_path;   
-   }
-   public void writeToFile(String textLine){
-   
-      FileWriter write = new FileWriter(path, append_to_file);
-   }
-}*/
