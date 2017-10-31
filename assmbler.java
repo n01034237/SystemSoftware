@@ -22,7 +22,7 @@ public class assmbler{
       
       try{
       
-      //need to create a 2D array to store opcode and neumonics
+      //need to create a 2D array to store opcode and neumonics?
       
          Scanner reader = new Scanner(new File(args[0]));
          
@@ -31,7 +31,8 @@ public class assmbler{
          
             //if file has next line then continue to read and store into array
             String line = reader.nextLine();
-         
+            
+            //add line into arraylist
             array.add(new String(line));
              
          }
@@ -39,25 +40,48 @@ public class assmbler{
          
          BufferedWriter bw = null;
          FileWriter fw = null;
+         
          //write a new line to the output file
          String newLine = System.getProperty("line.separator");
+         
+         //attempt at COUNTER
+         int counter = 0;
+         int value = Integer.parseInt("0", 16);
+         
+         
         
         //try to write to  output file 
          try{      
    
            //user can change output file name
-           fw = new FileWriter("prog1testing.txt");
+           fw = new FileWriter("prog2.txt");
            bw = new BufferedWriter(fw);
            
-           //compare string to lines of string stored in the ArrayList array
-           for(String str : array){
-          
-          //writes contents of array into output file 
-           bw.write(str + newLine);
+           String LOCCTR = "0000";
            
+           //padding zeros
+           String ZEROS = "0000";
+           
+           //write header of file
+           bw.write("Location" + "     "  + "Program" + "                  " + "Opcode" + newLine);
+           bw.write("-------     --------------            --------" + newLine);
+           
+           for(String str : array){
+
+           //write arraylist into a seperate file
+           bw.write(LOCCTR + "\t" + "   " + str + newLine);
+           
+          //increment LOCCTR by 3, need to replace with if statement and compare to OBTAB
+           value += 3;
+           String hexNum = Integer.toHexString(value);
+         
+           LOCCTR = hexNum.length() < 4 ? ZEROS.substring(hexNum.length()) + hexNum.toUpperCase() : hexNum;
+
             
             }
             bw.close();
+            
+            //System.out.println(".lst file is written.");
         
          
             }
