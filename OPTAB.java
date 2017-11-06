@@ -20,8 +20,8 @@ static void populate()
 	opTab.put("MUL",0x20);
 	opTab.put("OR",0x44);
 	opTab.put("RD",0xD8);
-   opTab.put("RSUB",0x4C);
-   opTab.put("SUB",0x1C);
+   	opTab.put("RSUB",0x4C);
+   	opTab.put("SUB",0x1C);
 	opTab.put("STCH",0x54);
 	opTab.put("STL",0x14);
 	opTab.put("STSW",0xE8);
