@@ -1,36 +1,42 @@
 import java.util.*;
-public class OPTAB extends Token ();
+
+public class OPTAB{
+static private Hashtable<String,Integer> opTab;
+static void populate()
 {
-   private static class 
-   {
-      public Token.Value val;
-      //Token used as key to check each element of the OPTAB
-      public int opcode;
-      //opcode for the opcode valve used in the appendixed
-      public OPTAB_ENTRY(Token.Value val, int opcode)
-      {
-         this.val = val;
-         this.opcode = opcode;
-         //this method used for getting the value of the opcode and the value of the token
-         
-      }
-   }
-   private static Map<String, OPTAB_ENTRY> optab;
-   static 
-   {
-      optab = new HashMap<String, OPTAB_ENTRY>();
-      //Creates new entries for the elements of the hashTable ie the OPTAB from Appendix
-      optab.put("ADD", new OPTAB_ENTRY(Token.Value.OP0, 0x18));
-      optab.put("ADDF", new OPTAB_ENTRY(Token.Value.OP0, 0x58));
-      optab.put("ADDR", new OPTAB_ENTRY(Token.Value.OP0, 0x90));
-      optab.put("AND", new OPTAB_ENTRY(Token.Value.OP0, 0x40));
-      optab.put("CLEAR", new OPTAB_ENTRY(Token.Value.CLEAR, 0xB4));
-      optab.put("COMP", new OPTAB_ENTRY(Token.Value.OP0, 0x28));
-      optab.put("COMPF", new OPTAB_ENRTY(Token.Value.OP0, 0x88));
-      optab.put("COMPR", new OPTAB_ENTRY(Token.Value.OP0, 0xA0));
-      optab.put("DIV", new OPTAB_ENTRTY(Token.Value.OP0, 0x24));
-      optab.put("DIVF", new OPTAB_ENTRY(Token.Value.OP0, 0x64));
-      optab.put("DIVR", new OPTAB_ENTRY(Token.Value.OP0, 0x9C)); 
-       
-   }
+	opTab=new Hashtable<String,Integer>();
+	opTab.put("ADD",0x18);
+	opTab.put("AND",0x40);
+	opTab.put("COMP",0x28);
+	opTab.put("DIV",0x24);
+	opTab.put("J",0x3C);
+	opTab.put("JEQ",0x30);
+	opTab.put("JGT",0x34);
+	opTab.put("JLT",0x38);
+	opTab.put("JSUB",0x48);
+	opTab.put("LDCH",0x50);
+	opTab.put("LDL",0x08);
+	opTab.put("LDX",0x04);
+	opTab.put("MUL",0x20);
+	opTab.put("OR",0x44);
+	opTab.put("RD",0xD8);
+   opTab.put("RSUB",0x4C);
+   opTab.put("SUB",0x1C);
+	opTab.put("STCH",0x54);
+	opTab.put("STL",0x14);
+	opTab.put("STSW",0xE8);
+	opTab.put("STX",0x10);
+	opTab.put("SUB",0x1C);
+	opTab.put("TD",0xE0);
+	opTab.put("TIX",0x2C);
+	opTab.put("WD",0xDC);
+}
+
+static public int getOpCode(String key)
+{
+	Integer code=opTab.get(key.toUpperCase());
+	if(code==null)	return -1;
+	else return code;
+}
+
 }
