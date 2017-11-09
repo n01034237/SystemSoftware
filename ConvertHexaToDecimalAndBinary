@@ -1,0 +1,23 @@
+import java.util.Scanner;
+
+public class ConvertHexaToDecimalAndBinary 
+{
+   public static void main(String args[]) 
+   {
+      // Enter an Hexa number
+      System.out.print("Hexadecimal: ");
+      Scanner scanner = new Scanner(System.in);
+      
+      String hexadecimal = scanner.next();
+      
+      //Converting Hexa to Decimal
+      int decimal = Integer.parseInt(hexadecimal, 16);
+      
+      System.out.println("Decimal: " + decimal);
+    
+      //Converting hexa to binary       
+      String binary = Integer.toBinaryString(decimal);
+      System.out.printf("Binary: " + binary);
+      
+   }
+}
