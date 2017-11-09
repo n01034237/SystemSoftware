@@ -33,7 +33,7 @@ public class SYMTAB
          String k=(String)key.nextElement();
          hashTab.append(k+"\t"+LOCCTR.get(k)+"\n");
       }
-      return hashTab.toSting();
+      return hashTab.toString();
      }
      
 }  
