@@ -24,7 +24,7 @@ public class SYMTAB
         
       }
      //method to print the value
-     public String toString()
+     /*public String toString()
      {
       StringBuilder hashTab=new StringBuilder();
       //Enumeration key=LOCCTR.key();
@@ -34,6 +34,6 @@ public class SYMTAB
          hashTab.append(k+"\t"+LOCCTR.get(k)+"\n");
       }
       return hashTab.toString();
-     }
+     }*/
      
 }  
