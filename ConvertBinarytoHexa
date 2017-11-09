@@ -1,0 +1,21 @@
+import java.util.Scanner;
+
+public class ConvertBinarytoHexa
+{
+   public static void main(String args[]) 
+   {
+      // Enter an Hexa number
+      Scanner scan;
+	    int num;
+		  scan = new Scanner(System.in);
+		
+		  System.out.println("Binary:");
+		  num = Integer.parseInt(scan.nextLine(), 2);
+      
+      //Converting binary to hex
+		  String hexa = Integer.toHexString(num);
+		
+		  System.out.println("HexaDecimal: " + hexa);
+    
+   }
+}
