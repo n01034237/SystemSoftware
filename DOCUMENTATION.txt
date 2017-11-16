@@ -1,0 +1,20 @@
+lines 20-69	adds to optab
+lines 71-76	takes keys in optab and stores into an arraylist
+line 85-100	read files
+
+line 126-234	writes files 
+{
+	line 130 transverse arraylist of strings read from files 
+	line 131 gets LOCCTR from file
+	line 143 writes input file to output file
+	line 151-181 trims whitespace of line and splits
+
+		+splits bases on the length(number of variables present)
+		ex. SQUARING START 100 is of length 3
+
+		+ divides the split to a new arraylist
+		One that holds mnemonics, the other is operands
+
+	line 186-221 increments LOCCTR based on mnemonic present
+
+}
