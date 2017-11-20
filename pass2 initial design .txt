@@ -1,0 +1,22 @@
+put LOCCTR into SYMTAB
+(we can use an arrayList as SYMTAB then add LOCCTR to the list)
+Put Labels into SYMTAB (we can add the 1st section of the source file into the arrayList)
+For both LOCCTR and Labels, we can either read them from the intermeadiate file(prog2) or we can read LOCCTR as its generated and Labels from source file.
+read OPTAB to get Mnemoic value 
+check OPARAND ie 3 section of file with SYMTAB to make sure OPARAND is valid(probably a compareto method) else set error flag
+if OPARAND is found in SYMTAB then for SIC get OPARAND ie Label's LOCCTR and OPTAB Mnemoic value and concatinate both to produce OPCODE
+convert to binary and save value in arrayList
+count 1st 6 index of arrayList as opcode then set next indexes as {n i x b p & e}
+check if Mnemoic HAS +, #, or @
+if + set as format 4 and add 0's to arrayList after seting indext { b p & e to 1 }
+if # set i=1 & n b p = 0
+if @ set n = 1 & i b p = 0 else n & i = 1
+for pc relative add pc<-2046 or add -pc>2047
+p=0, b=1 else p=1 & b=0
+convet back to hex, print value as opcodeparse opcode to get letnght of opcode (counting each 2 digits as 1 byte)
+break if RESB, RESW or WORD
+Print HTME (Header, Text, Modification and End record as object program)
+set 1st opcodeas header and assign lenght of obcode to header also
+for Text print contiguious opcode as 1 text recode. (non contiguois if we see a break)
+check if text record needed modification set that opcode recode as modification record and add half byte
+set start address as end record
