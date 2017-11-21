@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
 
-public class newAssmbler{
+public class assmbler4{
 
    //main method
    public static void main(String args[]) throws FileNotFoundException{
@@ -66,7 +66,31 @@ public class newAssmbler{
       optab2.put("SHIFTL", new Integer(0xA4));
       optab2.put("SHIFTER", new Integer(0xA8));
       optab2.put("SUBR", new Integer(0x94));
-      optab2.put("TIXR", new Integer(0xB8));      
+      optab2.put("TIXR", new Integer(0xB8)); 
+      
+      ArrayList<String> headerBit = new ArrayList<String>();
+      
+     //enumeration for optab keys
+     Enumeration en = optab.keys();
+     while (en.hasMoreElements()) {
+      String header = (String) en.nextElement();
+      int hexVar = optab.get(header);
+      String hexa = Integer.toHexString(hexVar).toUpperCase();
+      headerBit.add(new String((header + " : " + hexa)));
+    }
+      Enumeration eno = optab2.keys();    
+      while (eno.hasMoreElements()) {
+      String header2 = (String) eno.nextElement();
+      int hexVar2 = optab2.get(header2);
+      String hexa2 = Integer.toHexString(hexVar2).toUpperCase();
+      headerBit.add(new String((header2 + " : " + hexa2)));
+    } 
+    for(String r: headerBit){
+    System.out.println(r);
+    String[] h = r.split(":");
+    System.out.println(h[1]); 
+    
+    }
 
      
 
@@ -125,6 +149,8 @@ public class newAssmbler{
            bw = new BufferedWriter(fw);
            
            String LOCCTR = "0000";
+           String OPCODE = "000000";
+           String OPCODE2 = "00000000";
            
            //padding zeros
            String ZEROS = "0000";
