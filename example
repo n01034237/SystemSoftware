@@ -1,0 +1,294 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.Vector;
+
+public class Main {
+
+    public static Vector<String> f1 = new Vector<>();
+    public static Vector<String> f2 = new Vector<>();
+    public static Vector<String> f3 = new Vector<>();
+    public static Vector<String> f4 = new Vector<>();
+
+    public static Vector<Integer> o1 = new Vector<>();
+    public static Vector<Integer> o2 = new Vector<>();
+    public static Vector<Integer> o3 = new Vector<>();
+    public static Vector<Integer> o4 = new Vector<>();
+
+    public static Vector<String> d0 = new Vector<>();
+    public static Vector<String> d1 = new Vector<>();
+    public static Vector<String> d2 = new Vector<>();
+    public static Vector<String> d3 = new Vector<>();
+    public static Vector<String> d4 = new Vector<>();
+
+    public static void main(String[] args) throws Exception {
+        initFormat();
+
+        readFile();
+        printFile();
+        passOne();
+        printOne();
+
+        passTwo();
+        printTwo();
+
+        symbolTable();
+        PrintOneTwo();
+//        HTE();
+    }
+
+    private static void symbolTable() {
+        System.out.println("-- symbol table --");
+        for (int i = 0; i < d1.size(); i++) {
+            if (d1.get(i).equals("") == false) {
+                System.out.println(d0.get(i) + " " + d1.get(i));
+            }
+        }
+        System.out.println();
+    }
+
+    private static void PrintOneTwo() {
+        System.out.println(" -- print it all --");
+
+        for (int i = 0; i < d2.size(); i++) {
+            if (i > 0 && i < d0.size()) {
+                System.out.print(d0.get(i) + " ");
+            }
+            System.out.print(d1.get(i) + " " + d2.get(i) + " " + d3.get(i) + " ");
+            if (i > 0 && i < d4.size()) {
+                System.out.print(d4.get(i));
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    private static void HTE() {
+        System.out.println("-- HTE Record --");
+        String h = "H " + d1.get(0) + " " + d0.get(0) + " ";
+        h += Integer.toHexString(Integer.parseInt(d0.get(d0.size() - 1), 16) - Integer.parseInt(d0.get(0), 16));
+        System.out.println(h);
+
+//        Vector<String> t = new Vector<>();
+//        while (true) {
+//            int tSize = 0x0;
+//
+//            Vector<Integer> tempT = new Vector<>();
+//            t.add("T " + d0.get(i) + " ");
+//            System.out.println(t.lastElement());
+//            for (; i < d2.size(); i++) {
+//                if (d2.get(i).toLowerCase().contains("resb") || d2.get(i).toLowerCase().contains("resw")) {
+//                    break;
+//                }
+//                tempT.add(Integer.parseInt(d4.get(i), 16));
+//                tSize += tempT.get(tempT.size() - 1);
+//
+//                System.out.println(tempT.lastElement());
+//            }
+//
+//            if (i >= d2.size()) {
+//                break;
+//            }
+//            for (int j = 0; j < tempT.size(); j++) {
+//                t.set(t.size() - 1, t.get(t.size() - 1) + " " + tempT.get(j));
+//            }
+//        }
+        String tempt = "";
+        String temStart = "";
+        for (int i = 0, j = 0; i <= d4.size(); i++) {
+            if (i == d4.size()) {
+                System.out.println("T " + temStart + " " + Integer.toHexString((int) Math.ceil(tempt.length() / 2.0)) + " " + tempt);
+                temStart = "";
+                break;
+            }
+            if (d2.get(i).toLowerCase().contains("resw") || d2.get(i).toLowerCase().contains("resb")) {
+                j = 1;
+            } else if (tempt.length() >= 30) {
+                j = 1;
+                i--;
+            } else if (j == 1) {
+                System.out.println("T " + temStart + " " + Integer.toHexString((int) Math.ceil(tempt.length() / 2.0)) + " " + tempt);
+                temStart = "";
+                j = 0;
+                tempt = "";
+                i--;
+            } else {
+                if (temStart.length() < 1) {
+                    temStart = d0.get(i);
+                }
+                tempt += d4.get(i);
+
+            }
+
+        }
+        String e = "E " + d0.get(0);
+        System.out.println(e);
+        System.out.println();
+    }
+
+    private static void passTwo() {
+        d4.add("");
+        for (int i = 1; i < d2.size() - 1; i++) {
+            Integer x = 0;
+            if (f1.contains(d2.get(i).toLowerCase())) {
+                x = o1.get(f1.indexOf(d2.get(i).toLowerCase()));
+            }
+            if (f2.contains(d2.get(i).toLowerCase())) {
+                x = o2.get(f2.indexOf(d2.get(i).toLowerCase()));
+            }
+            if (f3.contains(d2.get(i).toLowerCase())) {
+                x = o3.get(f3.indexOf(d2.get(i).toLowerCase()));
+            }
+
+            if (d3.get(i).toLowerCase().contains(",x")) {
+                int indexed = Integer.parseInt(d0.get(d1.indexOf(d3.get(i).substring(0, d3.get(i).lastIndexOf(",")))), 16) + 0x8;
+                d4.add(Integer.toHexString(x) + Integer.toHexString(indexed));
+
+            } else if (d2.get(i).toLowerCase().contains("word") || d2.get(i).toLowerCase().contains("byte")) {
+                try {
+                    d4.add(Integer.toHexString(Integer.parseInt(d3.get(i), 16)));
+
+                } catch (Exception e) {
+                    try {
+//                        d4.add(Arrays.toString(d3.get(i).getBytes("US-ASCII")).replaceAll(", ", "").replace("[", "").replace("]", ""));
+                        String tempS = "";
+                        String d3i = d3.get(i);
+                        for (int j = 0; j < d3i.length(); j++) {
+                            tempS += "" + (int) d3i.charAt(j);
+                        }
+                        d4.add(tempS);
+                    } catch (Exception ee) {
+
+                    }
+                }
+
+
+            } else if (d2.get(i).toLowerCase().contains("resw") || d2.get(i).toLowerCase().contains("resb")) {
+                d4.add("");
+            } else {
+                d4.add(Integer.toHexString(x) + Integer.toHexString(Integer.parseInt(d0.get(d1.indexOf(d3.get(i))), 16)));
+            }
+        }
+
+    }
+
+    private static void printOne() {
+        System.out.println("-- print one --");
+        for (int i = 0; i < d0.size(); i++) {
+            System.out.println(i + " " + d0.get(i));
+        }
+        System.out.println();
+    }
+
+    private static void printTwo() {
+        System.out.println("-- print two --");
+        for (int i = 0; i < d4.size(); i++) {
+            System.out.println(d4.get(i));
+        }
+        System.out.println();
+    }
+
+    private static void passOne() {
+        d0.add(d3.get(0));
+
+
+        for (int j = 1; j < d2.size(); j++) {
+            if (f1.indexOf(d2.get(j).toLowerCase()) >= 0) {
+                d0.add(Integer.toHexString(Integer.parseInt(d0.get(j - 1), 16) + 0x1));
+            } else if (f2.indexOf(d2.get(j).toLowerCase()) >= 0) {
+                d0.add(Integer.toHexString(Integer.parseInt(d0.get(j - 1), 16) + 0x2));
+            } else if (f3.indexOf(d2.get(j).toLowerCase()) >= 0) {
+                d0.add(Integer.toHexString(Integer.parseInt(d0.get(j - 1), 16) + 0x3));
+
+            } else if( d2.get(j).toLowerCase().contains("word")){
+                if(d3.get(j).contains(",")){
+                    int comma = 0 ;
+                    for (int i = 0; i < d3.get(j).length(); i++) {
+                        if(d3.get(j).charAt(i)==','){
+                            comma++;
+                        }
+                    }
+                    comma*=3;
+                    d0.add(Integer.toHexString(Integer.parseInt(d0.get(j - 1), 16) + Integer.parseInt(String.valueOf(comma),16)));
+
+                }else {
+                    d0.add(Integer.toHexString(Integer.parseInt(d0.get(j - 1), 16) + 0x3));
+
+                }
+
+            }
+            else if (d2.get(j).toLowerCase().contains("byte")) {
+                if (d3.get(j).toLowerCase().contains("x'")) {
+                    String x = String.valueOf((int) ((d3.get(j).toLowerCase().length() - 3) / 2.0));
+
+                    d0.add(Integer.toHexString(Integer.parseInt(d0.get(j - 1), 16) + Integer.parseInt(x, 16)));
+                } else if (d3.get(j).toLowerCase().contains("c'")) {
+                    String x = String.valueOf((int) ((d3.get(j).toLowerCase().length() - 3))); // do  i need to * 3
+
+                    d0.add(Integer.toHexString(Integer.parseInt(d0.get(j - 1), 16) + Integer.parseInt(x, 16)));
+                }
+            } else if (d2.get(j).toLowerCase().contains("resw")) {
+                String x = String.valueOf(Integer.parseInt(d3.get(j)) * 3);
+
+                d0.add(Integer.toHexString(Integer.parseInt(d0.get(j - 1), 16) + Integer.parseInt(x, 16)));
+            } else if (d2.get(j).toLowerCase().contains("resb")) {
+                String x = String.valueOf(Integer.parseInt(d3.get(j)));
+
+                d0.add(Integer.toHexString(Integer.parseInt(d0.get(j - 1), 16) + Integer.parseInt(x, 16)));
+            }
+        }
+
+
+    }
+
+    private static void initFormat() {
+        String s1[] = {"oeuo", "oeu"};
+        String s2[] = {"compr"};
+        String s3[] = {"stl", "jsub", "lda"};
+        String s4[] = {"oeuo", "oeu"};
+
+        Integer so1[] = {0x4, 0x5e};
+        Integer so2[] = {0x50, 0x45};
+        Integer so3[] = {0xa4, 0xe4, 0x70};
+        Integer so4[] = {0xa4, 0x74};
+
+        f1.addAll(Arrays.asList(s1));
+        f2.addAll(Arrays.asList(s2));
+        f3.addAll(Arrays.asList(s3));
+        f4.addAll(Arrays.asList(s4));
+
+        o1.addAll(Arrays.asList(so1));
+        o2.addAll(Arrays.asList(so2));
+        o3.addAll(Arrays.asList(so3));
+        o4.addAll(Arrays.asList(so4));
+
+
+    }
+
+    private static void readFile() throws FileNotFoundException {
+        File file = new File(";.txt");
+
+        Scanner scanner = new Scanner(file);
+
+        String line = new String();
+        int i;
+        for (i = 0; scanner.hasNext(); i++) {
+            line = scanner.nextLine();
+            String s[] = line.split(" ");
+            d1.add(s[0]);
+            d2.add(s[1]);
+            d3.add(s[2]);
+        }
+
+    }
+
+    private static void printFile() {
+        System.out.println("-- file data --");
+        for (int j = 0; j < d2.size(); j++) {
+            System.out.println(d1.get(j) + " " + d2.get(j) + " " + d3.get(j) + " ");
+        }
+        System.out.println();
+    }
+}
