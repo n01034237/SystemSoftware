@@ -1,4 +1,12 @@
 # SystemSoftware
+
+STAGE2
+11/25/2017
+passTwo code stores the files LOCCTR and labels
+newAssembler completes passOne
+
+
+-------------------------------------------------------------------------------------------------
 First github.
 Assembler
 
