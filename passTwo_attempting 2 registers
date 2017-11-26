@@ -1,0 +1,344 @@
+//import libraries
+import java.util.*;
+import java.lang.*;
+import java. io.*;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
+
+public class passTwo{
+
+   //main method
+   public static void main(String args[]) throws FileNotFoundException{
+   
+   ArrayList<String> locationArray = new ArrayList<String>();
+   ArrayList<String> locOperand = new ArrayList<String>();
+        
+      //Creates new entries for the elements of the hashTable ie the OPTAB from Appendix
+      Hashtable<String, Integer> optabb = new Hashtable<String, Integer>();
+      optabb.put("ADD", new Integer (0x18));
+      optabb.put("ADDF", new Integer(0x58));
+      optabb.put("AND", new Integer(0x40));
+      optabb.put("COMP", new Integer(0x28));
+      optabb.put("COMPF", new Integer(0x88));
+      optabb.put("DIV", new Integer(0x24));
+      optabb.put("DIVF", new Integer(0x64));
+      optabb.put("J", new Integer(0x3C));
+      optabb.put("JEQ", new Integer(0x30));
+      optabb.put("JLT", new Integer(0x38));
+      optabb.put("JSUB", new Integer(0x48));
+	   optabb.put("LDA", new Integer(0x00));
+      optabb.put("LDB", new Integer(0x68));
+      optabb.put("LDCH", new Integer(0x50));
+      optabb.put("LDF", new Integer(0x70));
+      optabb.put("LDL", new Integer(0x08));
+      optabb.put("LDS", new Integer(0x6C));
+      optabb.put("LDT", new Integer(0x74));
+      optabb.put("LDX", new Integer(0x04));
+	   optabb.put("MUL", new Integer(0x20));
+      optabb.put("OR", new Integer(0x44));
+      optabb.put("RD", new Integer(0xD8));
+      optabb.put("RSUB", new Integer(0x4C));
+	   optabb.put("STA", new Integer(0x0C));
+      optabb.put("STB", new Integer(0x78));
+      optabb.put("STCH", new Integer(0x54));
+      optabb.put("STF", new Integer(0x80));
+      optabb.put("STI", new Integer(0xD4));
+      optabb.put("STL", new Integer(0x14));
+      optabb.put("STS", new Integer(0x7C));
+      optabb.put("STSW", new Integer(0xE8));
+      optabb.put("STT", new Integer(0x84));
+      optabb.put("STX", new Integer(0x10));
+      optabb.put("SUB", new Integer(0x1C));
+      optabb.put("SUBF", new Integer(0x5C));
+      optabb.put("TD", new Integer(0xE0));
+      optabb.put("TIX", new Integer(0x2C));
+      optabb.put("WD", new Integer(0xDC));
+   
+      optabb.put("ADDR", new Integer(0x90));
+      optabb.put("CLEAR", new Integer(0xB4));
+      optabb.put("COMPR", new Integer(0xA0));
+      optabb.put("DIVR", new Integer(0x9C));
+      optabb.put("RMO", new Integer(0xAC));
+      optabb.put("SHIFTL", new Integer(0xA4));
+      optabb.put("SHIFTER", new Integer(0xA8));
+      optabb.put("SUBR", new Integer(0x94));
+      optabb.put("TIXR", new Integer(0xB8));  
+
+
+try{
+
+ Hashtable<String, String> symtab = new Hashtable<String, String>();
+ ArrayList<String> row = new ArrayList<String>();
+ ArrayList<String> thirdArray = new ArrayList<String>();
+ ArrayList<String> fourthArray = new ArrayList<String>();
+ String OPCODE3 = "000000";
+ String OPCODE4 = "00000000";
+
+ 
+
+         Scanner r = new Scanner(new File("output.txt"));
+         
+         //program reads file
+         while(r.hasNextLine()){
+
+           
+            //if file has next line then continue to read and store into array
+            String string = r.nextLine();
+   
+            
+            //add line into arraylist
+            row.add(new String(string));
+               
+         }
+         r.close();
+         
+         String[] rO = row.toArray(new String[row.size()]);
+         String[] local = new String[row.size()];
+            
+            for(String arrange : row){
+            String[] rowPart = arrange.split("\\s");
+            String part1,part2, part3, part4;
+            
+            //System.out.println(arrange.trim().split("\\s").length);
+            
+            if(arrange.trim().split("\\s").length == 4){
+            part1 = rowPart[0];
+            part2 = rowPart[1];
+            part3 = rowPart[2];
+            part4 = rowPart[3];
+            
+            thirdArray.add(part3);
+            fourthArray.add(part4);
+            
+            if(!(part2.isEmpty()))
+            {
+               symtab.put(new String(part2), new String(part1));
+            }
+
+
+         }
+
+       }             
+     
+     
+         //System.out.println("LOCCTR" + " \t\t" + "Program" + "\t\t\t" + "Opcode");
+         //System.out.println();
+     
+         for(int g = 2; g < row.size(); g++){
+         //for(String compare:thirdArray){
+         
+         String compare = rO[g];
+         String compare1, compare2, compare3, compare4;
+         String[] cPart = compare.trim().split("\\s");
+                     Enumeration en = optabb.keys();
+                     while (en.hasMoreElements()) {
+                     String header = (String) en.nextElement();
+                     int hexVar = optabb.get(header);
+                     String hexa = Integer.toHexString(hexVar).toUpperCase(); 
+                     
+                     Enumeration location = symtab.keys();    
+                     while (location.hasMoreElements()) {
+                     String locKey = (String) location.nextElement();
+                     String locHex = symtab.get(locKey);
+                     
+                     
+           
+
+            if(compare.trim().split("\\s").length >= 4  && compare.trim().split("\\s").length < 6){
+            compare1 = cPart[0];
+            compare2 = cPart[1];
+            compare3 = cPart[2];
+            compare4 = cPart[3];
+            
+                    if(compare3.equals(header)){
+
+                     OPCODE3 = hexa;
+                     local[g] = OPCODE3;
+          
+                     if(OPCODE3.length() < 2){
+                     OPCODE3 = "0" + OPCODE3;
+                     
+                     }
+                     
+                     if(compare4.equals(locKey)){
+                     OPCODE3 = OPCODE3 + locHex;
+                     System.out.println(header + " " + OPCODE3);
+                     }
+                     
+
+                       
+            }
+                     
+       
+             
+                  }
+                  }
+                              
+            if(compare.contains("RSUB")){
+            
+            compare3 = "RSUB";
+
+                    if(compare3.equals(header)){
+
+                     OPCODE3 = hexa;
+                     local[g] = OPCODE3;
+                     if(OPCODE3.length() < 2){
+                     OPCODE3 = "0" + OPCODE3;
+                     
+                     }
+                     OPCODE3 = OPCODE3 + "0000";
+                     System.out.println(header + " " + OPCODE3);
+                     
+                     }  
+            
+            }
+            if(compare.trim().split("\\s").length >= 4  && compare.trim().split("\\s").length < 6){
+            compare1 = cPart[0];
+            compare2 = cPart[1];
+            compare3 = cPart[2];
+            compare4 = cPart[3];
+            
+                    if(compare3.equals(header)){
+
+                     OPCODE3 = hexa;
+                     local[g] = OPCODE3;
+                     
+                     
+////////////////////////////2 REGISTERS//////////////////////////////////////////////////////////                     
+                     if(compare4.contains("A")){
+                     
+                     if(compare4.equals("A")){
+                     OPCODE3 = OPCODE3 + "0";
+                     System.out.println(header + " " + OPCODE3 + "0");
+                     }
+                     else{
+                     OPCODE3 = OPCODE3 + "0";
+                     System.out.println(header + " " + OPCODE3);
+                     }
+
+                     }
+                     else if(compare4.contains("X")){
+                     if(compare4.equals("X")){
+                     OPCODE3 = OPCODE3 + "1";
+                     System.out.println(header + " " + OPCODE3 + "0");
+                     }
+                     else{
+                     OPCODE3 = OPCODE3 + "1";
+                     System.out.println(header + " " + OPCODE3);
+                     }
+                     }
+                     else if(compare4.contains("B")){
+                     if(compare4.equals("B")){
+                     OPCODE3 = OPCODE3 + "3";
+                     System.out.println(header + " " + OPCODE3 + "0");
+                     }
+                     else{
+                     OPCODE3 = OPCODE3 + "3";
+                     System.out.println(header + " " + OPCODE3);
+                     }
+
+                     }
+                     else if(compare4.contains("L")){
+                     if(compare4.equals("L")){
+                     OPCODE3 = OPCODE3 + "2";
+                     System.out.println(header + " " + OPCODE3 + "0");
+                     }
+                     else{
+                     OPCODE3 = OPCODE3 + "2";
+                     System.out.println(header + " " + OPCODE3);
+                     }
+                     }
+                     else if(compare4.contains("S")){
+                     if(compare4.equals("S")){
+                     OPCODE3 = OPCODE3 + "4";
+                     System.out.println(header + " " + OPCODE3 + "0");
+                     }
+                     else{
+                     OPCODE3 = OPCODE3 + "4";
+                     System.out.println(header + " " + OPCODE3);
+                     }
+                     }
+                     else if(compare4.contains("T")){
+                     if(compare4.equals("T")){
+                     OPCODE3 = OPCODE3 + "5";
+                     System.out.println(header + " " + OPCODE3 + "0");
+                     }
+                     else{
+                     OPCODE3 = OPCODE3 + "5";
+                     System.out.println(header + " " + OPCODE3);
+                     }
+                     }
+                     else if(compare4.contains("F")){
+                     if(compare4.equals("F")){
+                     OPCODE3 = OPCODE3 + "6";
+                     System.out.println(header + " " + OPCODE3 + "0");
+                     }
+                     else{
+                     OPCODE3 = OPCODE3 + "6";
+                     System.out.println(header + " " + OPCODE3);
+                     }
+                     }
+                     else if(compare4.contains("PC")){
+                     if(compare4.equals("PC")){
+                     OPCODE3 = OPCODE3 + "8";
+                     System.out.println(header + " " + OPCODE3 + "0");
+                     }
+                     else{
+                     OPCODE3 = OPCODE3 + "8";
+                     System.out.println(header + " " + OPCODE3);
+                     }
+                     }
+                      else if(compare4.contains("SW")){
+                     if(compare4.equals("SW")){
+                     OPCODE3 = OPCODE3 + "9";
+                     System.out.println(header + " " + OPCODE3 + "0");
+                     }
+                     else{
+                     OPCODE3 = OPCODE3 + "9";
+                     System.out.println(header + " " + OPCODE3);
+                     }
+                     }
+
+                       
+            }
+                     
+       
+             
+                  }
+            
+                
+               
+
+         
+        // }
+                           /*if(compare.equals(header)){
+
+                     
+                  
+                     OPCODE3 = hexa;
+                     local[g] = OPCODE3;
+                     //System.out.println(OPCODE3);
+                     
+                     }
+         System.out.println(local[g]);*/
+         
+
+         //System.out.println(rO[g] + "  \t\t" + local[g]);
+         }
+     
+           }  
+                  
+         
+
+         
+
+      }
+      catch(FileNotFoundException er){
+         System.out.println("Error. Cannot read file.");
+         return;
+      }
+     
+                 
+   }
+}
