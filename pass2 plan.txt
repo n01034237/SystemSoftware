@@ -1,0 +1,72 @@
+part3 - Mnemounic in an array
+part4 - Operand in an array
+read array index for part3 to get corresponding value of Mnemounic 
+like use a for look and and if statament 
+	if value in array index correspond to OPTAB getInt Val
+check SYMTAB to get corresponding LOCCTR for part4
+creat Var OpCode which is "MnemounicVal + part4LOCCTR"
+ change OpCode to binary 
+ use if statament to check if part4 has '+' '#' or '@'
+ if '+' change OpCode to 32 bit binary, pad with zeros 
+ save binary OpCode in an array of size 32
+ set 1st 6 binary OpCode array index as opcode
+ set next 6 index as 'N' 'I' 'X' 'B' 'P' 'E' corresponding
+ and set N & I = 1 and B & P = 0
+ read B P E as part of ADDR  to use in opcodeGen method
+ call opcodeGen
+ else change to 24 bit binary for format 3
+ save binary OpCode in an array of size 24 
+ set 1st 6 binary OpCode array index as opcode
+ set next 6 index as 'N' 'I' 'X' 'B' 'P' 'E' corresponding
+ in a for loop set N & I to 1 
+//set P = 1 
+ if '#' is found in part4 
+ set N = 0 & I = 1
+ call opcodeGen method 
+ if '@' is found in part4
+ set N =1 & I = 0
+ call opcodeGen method
+ 
+ we can put line 12 and 13 as well as 19, 20 in a saparate method and call it 
+ 
+ 
+ (probaly in a method)
+ read next element of part4 to get LOCCTR
+ nextLCTR = TA
+ last 12/18 array index value = PC
+ change last 12/18 array index value ie disp or addr back to whichever form helps for calculating eg hex or dec
+ newDisp or newAddr = TA - PC
+ if statament to check if -4096 < newAddr or newDisp > 4096 
+ if not within range use base relative BC
+ set P = 0 and B = 1
+ set last 12/18 array index value = BC
+ change...
+ newAddr / newDisp = TA - BC
+ set newAddr or newDisp back as last 12/18 array index value
+ read new array content and change back to hex
+ write value as OPCODE to source file
+ 
+ We can put line 25 - 37 as a method opcodeGen
+ 
+ every thing will be in a loop untill no more contents in part4 array
+ 
+ if stataments for
+	when we see #num
+	'REG' letter - specific to each REG case
+		if 'C' check value after c and write ASCII 
+		if 'X' write X number and number after X in hex as opcode
+		if 'B' SAME AS X
+		if 'S' SAME AS X
+		if 'T' SAME AS X
+		if 'F' SAME AS X
+		if 'A', 'PC', 'L', 'SW' write REG number and pad with zeros
+	numbers - no opcode generated
+	check for CLEAR REGname - write CLEAR OPCODE + REGnum of the REGname
+	DO ssame for any format2 instruction with REG
+	
+Write out ObjetProgram
+H record
+T record
+E record
+
+:-) we are done YEEHH
